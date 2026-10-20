@@ -259,15 +259,10 @@ function initOnboardingGateway() {
     // Guest Bypass
     if (btnGuestBypass) {
         btnGuestBypass.addEventListener('click', () => {
-            if (!state.user) {
-                state.user = {
-                    name: "Guest Operator",
-                    username: "guest",
-                    email: "operator@sentinel.internal",
-                    role: "Lead SRE",
-                    department: "Infrastructure Evaluation"
-                };
-            }
+            // UNTIL AND UNLESS USER LOGS IN, NOTHING IS SHOWN IN USER DATA
+            state.user = null;
+            localStorage.removeItem('sentinel_user');
+            localStorage.removeItem('sentinel_token');
             renderUserSession();
             unlockDashboard();
         });
@@ -474,7 +469,7 @@ async function initAuth() {
         alertBox.className = 'auth-alert-box';
     }
 
-    // Check saved session & verify with server
+    // Check session or restore previous login
     const savedToken = localStorage.getItem('sentinel_token');
     const savedUser = localStorage.getItem('sentinel_user');
 
@@ -487,26 +482,32 @@ async function initAuth() {
                 const meData = await meRes.json();
                 state.user = meData.user;
                 localStorage.setItem('sentinel_user', JSON.stringify(meData.user));
-            } else if (savedUser) {
-                state.user = JSON.parse(savedUser);
+            } else {
+                localStorage.removeItem('sentinel_token');
+                localStorage.removeItem('sentinel_user');
+                state.user = null;
             }
         } catch (e) {
             if (savedUser) {
-                try { state.user = JSON.parse(savedUser); } catch(err) {}
+                try {
+                    const parsed = JSON.parse(savedUser);
+                    if (parsed && !/akshat|aksha/i.test(parsed.name || '') && !/akshat|aksha/i.test(parsed.username || '')) {
+                        state.user = parsed;
+                    } else {
+                        localStorage.removeItem('sentinel_user');
+                        state.user = null;
+                    }
+                } catch(err) {
+                    state.user = null;
+                }
+            } else {
+                state.user = null;
             }
         }
-    } else if (savedUser) {
-        try { state.user = JSON.parse(savedUser); } catch(err) {}
     } else {
-        // Default guest / evaluation operator
-        state.user = {
-            name: "Akshat (Lead)",
-            username: "admin",
-            email: "admin@sentinel.internal",
-            role: "admin",
-            department: "Platform Reliability"
-        };
-        localStorage.setItem('sentinel_user', JSON.stringify(state.user));
+        // UNTIL AND UNLESS USER LOGS IN, NOTHING IS SHOWN IN USER DATA!
+        state.user = null;
+        localStorage.removeItem('sentinel_user');
     }
     renderUserSession();
 
@@ -744,9 +745,9 @@ async function initAuth() {
 
 async function quickDemoLogin(role) {
     const demoCredentials = {
-        admin: { username: "admin", password: "sentinel2026", role: "Cluster Administrator", name: "Akshat (Lead)", email: "admin@sentinel.internal" },
-        sre: { username: "sre_lead", password: "sentinel2026", role: "Lead SRE", name: "DevOps Engineer", email: "sre.lead@sentinel.internal" },
-        viewer: { username: "auditor", password: "sentinel2026", role: "SecOps Auditor", name: "Security Auditor", email: "viewer@sentinel.internal" }
+        admin: { username: "admin", password: "sentinel2026", role: "Cluster Administrator", name: "Cluster Administrator", email: "admin@sentinel.internal" },
+        sre: { username: "sre_lead", password: "sentinel2026", role: "Lead SRE", name: "SRE Infrastructure Lead", email: "sre.lead@sentinel.internal" },
+        viewer: { username: "auditor", password: "sentinel2026", role: "SecOps Auditor", name: "SecOps Auditor", email: "viewer@sentinel.internal" }
     };
 
     const cred = demoCredentials[role];
@@ -792,7 +793,7 @@ function renderUserSession() {
     if (state.user) {
         if (userBadge) userBadge.style.display = 'flex';
         if (authBtn) authBtn.style.display = 'none';
-        const displayName = state.user.name || state.user.full_name || state.user.username || state.user.email || 'Akshat';
+        const displayName = state.user.name || state.user.full_name || state.user.username || state.user.email || 'Sentinel Operator';
         if (avatar) avatar.textContent = displayName[0].toUpperCase();
         if (nameEl) nameEl.textContent = displayName;
         if (roleTag) roleTag.textContent = (state.user.role || 'ADMIN').toUpperCase();

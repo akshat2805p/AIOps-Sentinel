@@ -559,7 +559,7 @@ cluster_nodes = [
 ]
 
 operator_users = [
-    {"id": "usr-1", "name": "Akshat (Lead)", "email": "admin@sentinel.internal", "role": "admin", "department": "Platform Reliability", "last_login": "Just now", "status": "active"},
+    {"id": "usr-1", "name": "Cluster Administrator", "email": "admin@sentinel.internal", "role": "admin", "department": "Platform Reliability", "last_login": "Just now", "status": "active"},
     {"id": "usr-2", "name": "DevOps Engineer", "email": "sre.lead@sentinel.internal", "role": "sre", "department": "Infrastructure SRE", "last_login": "15m ago", "status": "active"},
     {"id": "usr-3", "name": "Security Auditor", "email": "viewer@sentinel.internal", "role": "viewer", "department": "SecOps Audit", "last_login": "1h ago", "status": "active"}
 ]
@@ -659,7 +659,7 @@ async def auth_login(req: LoginRequest):
     
     if not user:
         # Fallback for demo convenience if user doesn't exist yet
-        if req.password in ("sentinel2026", "admin", "demo", "aksha2026"):
+        if req.password in ("sentinel2026", "admin", "demo"):
             role = "Lead SRE / SecOps Admin" if "admin" in login_id.lower() else "Infrastructure Ops"
             username = login_id.split("@")[0].lower()
             try:

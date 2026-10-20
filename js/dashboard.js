@@ -331,7 +331,7 @@ function initUserTableData() {
   for (let i = 1; i <= 25; i++) {
     appState.table.data.push({
       id: `USR-${1000 + i}`,
-      name: ["Akshat Sharma", "Sarah Jenkins", "Michael Chang", "Elena Rostova", "David Kim", "Priya Patel"][i % 6] + ` #${i}`,
+      name: ["Alex Turner", "Sarah Jenkins", "Michael Chang", "Elena Rostova", "David Kim", "Priya Patel"][i % 6] + ` #${i}`,
       email: `operator.${i}@sentinel.ops`,
       role: roles[i % roles.length],
       status: statuses[i % statuses.length],

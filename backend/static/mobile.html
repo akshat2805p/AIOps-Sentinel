@@ -1513,7 +1513,7 @@
                         <div class="card-title-group">
                             <span class="card-icon">💻</span>
                             <div>
-                                <div class="card-main-title">Target Device: <span id="real-host-name" style="color:var(--primary-cyan);">DELL</span> (<span id="real-user-name">aksha</span>)</div>
+                                <div class="card-main-title">Target Device: <span id="real-host-name" style="color:var(--primary-cyan);">WORKSTATION</span> (<span id="real-user-name">operator</span>)</div>
                                 <div class="card-sub-title" id="real-os-name">Windows 11 (Build 10.0.26300) • AMD64</div>
                             </div>
                         </div>
@@ -1620,7 +1620,7 @@
                             </div>
                             <div>
                                 <div class="unlock-main-title">Remote Laptop Unlock & Authentication</div>
-                                <div class="unlock-sub-title">Enter password or PIN from your phone to unlock <span id="unlock-user-host" style="color:var(--primary-cyan); font-weight:700;">DELL (aksha)</span> from anywhere</div>
+                                <div class="unlock-sub-title">Enter password or PIN from your phone to unlock <span id="unlock-user-host" style="color:var(--primary-cyan); font-weight:700;">Workstation (Operator)</span> from anywhere</div>
                             </div>
                         </div>
                         <div class="unlock-status-pill" id="laptop-lock-status-pill">
@@ -1633,11 +1633,11 @@
                     <div class="unlock-target-bar">
                         <div class="target-chip">
                             <span class="chip-label">TARGET USER</span>
-                            <span class="chip-val" id="unlock-target-username">aksha</span>
+                            <span class="chip-val" id="unlock-target-username">operator</span>
                         </div>
                         <div class="target-chip">
                             <span class="chip-label">WORKSTATION HOST</span>
-                            <span class="chip-val" id="unlock-target-hostname">DELL</span>
+                            <span class="chip-val" id="unlock-target-hostname">WORKSTATION</span>
                         </div>
                         <div class="target-chip">
                             <span class="chip-label">CONNECTION CHANNEL</span>
@@ -1771,7 +1771,7 @@
                     </div>
 
                     <div class="c2-status-feedback" id="c2-feedback-text">
-                        System Ready • Remote guard armed on DELL (aksha).
+                        System Ready • Remote guard armed on Workstation (Operator).
                     </div>
                 </div>
 
@@ -2402,8 +2402,8 @@
         // ──────────────────────────────────────────────────────────────
         // Remote Laptop Unlock & Authentication Engine (From Anywhere)
         // ──────────────────────────────────────────────────────────────
-        let currentTargetUser = "aksha";
-        let currentTargetHost = "DELL";
+        let currentTargetUser = "operator";
+        let currentTargetHost = "WORKSTATION";
 
         function initRemoteUnlockEngine() {
             const inputEl = document.getElementById('unlock-credential-input');

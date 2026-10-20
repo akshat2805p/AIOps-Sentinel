@@ -270,17 +270,17 @@ class DatabaseManager:
             if count == 0:
                 now = datetime.now(timezone.utc).isoformat()
                 admin_hash = self.hash_password("sentinel2026")
-                aksha_hash = self.hash_password("aksha2026")
+                sre_hash = self.hash_password("sentinel2026")
                 cur.execute("""
                     INSERT INTO users (username, email, password_hash, role, full_name, created_at)
                     VALUES (?, ?, ?, ?, ?, ?)
-                """, ("admin", "admin@sentinel.io", admin_hash, "Lead SRE / SecOps Admin", "System Administrator", now))
+                """, ("admin", "admin@sentinel.internal", admin_hash, "Lead SRE / SecOps Admin", "System Administrator", now))
                 cur.execute("""
                     INSERT INTO users (username, email, password_hash, role, full_name, created_at)
                     VALUES (?, ?, ?, ?, ?, ?)
-                """, ("aksha", "aksha@sentinel.io", aksha_hash, "Infrastructure Ops", "Aksha (Owner)", now))
+                """, ("sre_lead", "sre@sentinel.internal", sre_hash, "Infrastructure Ops", "Lead Reliability Engineer", now))
                 conn.commit()
-                logger.info("Database: Seeded default user accounts (admin, aksha).")
+                logger.info("Database: Seeded default user accounts (admin, sre_lead).")
             conn.close()
         except Exception as e:
             logger.warning(f"Failed to seed users: {e}")
