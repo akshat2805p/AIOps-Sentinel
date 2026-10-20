@@ -1,0 +1,152 @@
+# Simulator scenarios configuration
+# Defines normal behavior profiles and anomaly injection patterns
+
+normal_profiles:
+  web_server:
+    cpu_percent:
+      mean: 35.0
+      std: 12.0
+      min: 2.0
+      max: 85.0
+    memory_percent:
+      mean: 55.0
+      std: 8.0
+      min: 30.0
+      max: 80.0
+    disk_io_bytes_sec:
+      mean: 500000.0
+      std: 200000.0
+      min: 10000.0
+      max: 2000000.0
+    network_bytes_sec:
+      mean: 750000.0
+      std: 300000.0
+      min: 50000.0
+      max: 3000000.0
+    request_latency_ms:
+      mean: 45.0
+      std: 20.0
+      min: 5.0
+      max: 200.0
+    error_rate:
+      mean: 0.005
+      std: 0.003
+      min: 0.0
+      max: 0.02
+
+  database_server:
+    cpu_percent:
+      mean: 25.0
+      std: 10.0
+      min: 3.0
+      max: 70.0
+    memory_percent:
+      mean: 65.0
+      std: 5.0
+      min: 45.0
+      max: 80.0
+    disk_io_bytes_sec:
+      mean: 1200000.0
+      std: 400000.0
+      min: 100000.0
+      max: 5000000.0
+    network_bytes_sec:
+      mean: 400000.0
+      std: 150000.0
+      min: 20000.0
+      max: 1500000.0
+    request_latency_ms:
+      mean: 12.0
+      std: 5.0
+      min: 1.0
+      max: 50.0
+    error_rate:
+      mean: 0.002
+      std: 0.001
+      min: 0.0
+      max: 0.01
+
+anomaly_scenarios:
+  cpu_spike:
+    description: "Sudden CPU saturation from runaway process or high traffic"
+    duration_minutes: [5, 30]
+    affected_metrics:
+      cpu_percent:
+        override_mean: 95.0
+        override_std: 3.0
+      request_latency_ms:
+        multiplier: 3.5
+      error_rate:
+        multiplier: 4.0
+
+  memory_leak:
+    description: "Gradual memory increase simulating a leak over time"
+    duration_minutes: [30, 120]
+    ramp: linear
+    affected_metrics:
+      memory_percent:
+        start: 60.0
+        end: 97.0
+      request_latency_ms:
+        multiplier: 2.0
+      error_rate:
+        multiplier: 2.5
+
+  disk_saturation:
+    description: "Heavy disk I/O from bulk operations or logging storms"
+    duration_minutes: [10, 45]
+    affected_metrics:
+      disk_io_bytes_sec:
+        override_mean: 8000000.0
+        override_std: 1000000.0
+      request_latency_ms:
+        multiplier: 5.0
+      cpu_percent:
+        multiplier: 1.4
+
+  network_flood:
+    description: "Traffic burst or potential DDoS-like traffic volume"
+    duration_minutes: [5, 20]
+    affected_metrics:
+      network_bytes_sec:
+        override_mean: 12000000.0
+        override_std: 2000000.0
+      request_latency_ms:
+        multiplier: 4.0
+      error_rate:
+        multiplier: 6.0
+
+  latency_degradation:
+    description: "Downstream dependency slowdown causing cascading latency"
+    duration_minutes: [15, 60]
+    affected_metrics:
+      request_latency_ms:
+        override_mean: 800.0
+        override_std: 200.0
+      error_rate:
+        multiplier: 3.0
+
+  cascading_failure:
+    description: "Multiple metrics degrade simultaneously — worst case"
+    duration_minutes: [10, 30]
+    affected_metrics:
+      cpu_percent:
+        override_mean: 92.0
+        override_std: 4.0
+      memory_percent:
+        override_mean: 93.0
+        override_std: 3.0
+      request_latency_ms:
+        override_mean: 1200.0
+        override_std: 300.0
+      error_rate:
+        override_mean: 0.15
+        override_std: 0.05
+      disk_io_bytes_sec:
+        multiplier: 3.0
+
+generation:
+  hosts: ["server-01", "server-02", "server-03"]
+  interval_seconds: 10
+  normal_days: 7
+  seed: 42

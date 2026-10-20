@@ -1,0 +1,63 @@
+# ML training configuration
+
+data:
+  raw_path: "ml/data/raw/labeled_telemetry.csv"
+  processed_path: "ml/data/processed/features.csv"
+  train_ratio: 0.6
+  val_ratio: 0.2
+  test_ratio: 0.2
+
+features:
+  raw_metrics:
+    - cpu_percent
+    - memory_percent
+    - disk_io_bytes_sec
+    - network_bytes_sec
+    - request_latency_ms
+    - error_rate
+
+  rolling_windows: [6, 30, 60]    # in number of samples (at 10s interval)
+  rolling_stats: [mean, std]
+
+  diff_lags: [1, 6]               # rate-of-change features
+
+model:
+  isolation_forest:
+    n_estimators: 200
+    contamination: 0.05
+    max_samples: "auto"
+    random_state: 42
+    n_jobs: -1
+
+  # Optional supervised risk predictor
+  gradient_boosting:
+    n_estimators: 150
+    max_depth: 5
+    learning_rate: 0.1
+    random_state: 42
+
+alert_engine:
+  anomaly_threshold: -0.15         # Isolation Forest decision_function threshold
+  min_consecutive: 2               # require N consecutive anomalous observations
+  cooldown_seconds: 120            # suppress repeated alerts within this window
+  severity_thresholds:
+    critical: -0.35
+    warning: -0.15
+    info: -0.05
+
+evaluation:
+  metrics:
+    - precision
+    - recall
+    - f1_score
+    - false_positive_rate
+    - detection_delay_seconds
+    - inference_latency_ms
+
+output:
+  model_dir: "ml/models"
+  scaler_path: "ml/models/scaler.joblib"
+  forest_path: "ml/models/isolation_forest.joblib"
+  risk_model_path: "ml/models/risk_predictor.joblib"
+  onnx_path: "ml/models/anomaly_detector.onnx"
+  evaluation_path: "ml/models/evaluation_results.json"

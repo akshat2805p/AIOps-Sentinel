@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AIOps Sentinel Console — Autonomous Operations & Incident Triage</title>
+  <meta name="description" content="AIOps Sentinel Console: Mission control for real-time telemetry, multivariate AI anomaly detection, and incident response.">
+  
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2300f2fe'><path d='M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5'/></svg>">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="/css/dashboard.css">
+
+  <!-- Pinned CDN Libraries -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.344.0/dist/umd/lucide.min.js"></script>
+</head>
+<body>
+
+  <!-- App Layout -->
+  <div class="app-layout">
+    
+    <!-- Sidebar -->
+    <aside class="app-sidebar" id="app-sidebar">
+      <div class="sidebar-brand">
+        <a href="/" class="brand-wrapper">
+          <div class="brand-logo-gem">
+            <i data-lucide="shield-alert" style="width: 20px; height: 20px;"></i>
+          </div>
+          <span class="brand-title">AIOps <span style="color: #00f2fe;">Sentinel</span></span>
+        </a>
+        <button class="sidebar-toggle-btn" id="sidebar-toggle" title="Toggle Sidebar">
+          <i data-lucide="panel-left-close" style="width: 18px; height: 18px;"></i>
+        </button>
+      </div>
+
+      <ul class="sidebar-menu">
+        <li class="nav-item active">
+          <a href="/">
+            <i data-lucide="layout-dashboard"></i>
+            <span class="nav-text">Telemetry HUD</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="/#alarmer">
+            <i data-lucide="bell-ring"></i>
+            <span class="nav-text">Alarmer & Siren</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="/#devices">
+            <i data-lucide="smartphone"></i>
+            <span class="nav-text">Device Recognizer</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="/#admin">
+            <i data-lucide="shield-check"></i>
+            <span class="nav-text">Admin Board</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="/#qrconnect">
+            <i data-lucide="qr-code"></i>
+            <span class="nav-text">QR Mobile Link</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="#users">
+            <i data-lucide="users"></i>
+            <span class="nav-text">Operators & Users</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="#projects">
+            <i data-lucide="kanban"></i>
+            <span class="nav-text">Incident Kanban</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="#settings">
+            <i data-lucide="sliders"></i>
+            <span class="nav-text">Settings</span>
+          </a>
+        </li>
+      </ul>
+
+      <div class="sidebar-footer">
+        <div class="user-badge">
+          <div class="user-avatar-circle">AS</div>
+          <div class="user-info">
+            <span class="user-name">Akshat Sharma</span>
+            <span class="user-role">Lead SRE Engineer</span>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <div class="app-main">
+      
+      <!-- Topbar -->
+      <header class="app-topbar">
+        <div class="topbar-search" id="topbar-search-btn">
+          <i data-lucide="search" style="width: 16px; height: 16px;"></i>
+          <span>Search or command...</span>
+          <span class="kbd-shortcut">Ctrl+K</span>
+        </div>
+
+        <div class="topbar-actions">
+          <button class="icon-action-btn" id="theme-toggle-btn" title="Toggle Dark/Light Mode">
+            <i data-lucide="moon" style="width: 18px; height: 18px;"></i>
+          </button>
+
+          <button class="icon-action-btn" id="btn-notifications" onclick="showToast('Cluster Status: 3 nodes operational, 0 critical incidents.', 'info')" title="Notifications">
+            <i data-lucide="bell" style="width: 18px; height: 18px;"></i>
+            <span class="notification-badge-dot"></span>
+          </button>
+
+          <a href="/" class="btn btn-secondary" style="padding: 6px 14px; font-size: 0.8rem;">
+            <i data-lucide="external-link" style="width: 14px; height: 14px;"></i>
+            Landing
+          </a>
+        </div>
+      </header>
+
+      <!-- Dynamic Page Container -->
+      <main class="page-container">
+
+        <!-- VIEW 1: OVERVIEW -->
+        <section class="page-view active" id="view-overview">
+          <div class="page-header-row">
+            <div>
+              <h1 class="page-title">Operations Overview</h1>
+              <p class="page-subtitle">Continuous AI telemetry monitoring & cluster health indicators.</p>
+            </div>
+            <div style="display: flex; gap: 10px;">
+              <button class="btn btn-secondary" onclick="simulateIncident('CPU Saturation Spike', 'server-01')">
+                <i data-lucide="zap" style="width: 16px; height: 16px;"></i>
+                Test Anomaly
+              </button>
+              <button class="btn btn-primary" onclick="showToast('Telemetry refreshed from PostgreSQL backend.', 'success')">
+                <i data-lucide="refresh-cw" style="width: 16px; height: 16px;"></i>
+                Refresh
+              </button>
+            </div>
+          </div>
+
+          <!-- 4 KPI Cards with Count-up & Delta -->
+          <div class="kpi-row">
+            <div class="kpi-dash-card">
+              <div class="kpi-head">
+                <span class="kpi-label">Anomaly Index</span>
+                <i data-lucide="shield-check" style="color: #10b981; width: 18px;"></i>
+              </div>
+              <div class="kpi-val">+0.082</div>
+              <div class="kpi-delta positive">
+                <i data-lucide="arrow-up-right" style="width: 14px;"></i>
+                Safe Operating Zone (> -0.15)
+              </div>
+            </div>
+
+            <div class="kpi-dash-card">
+              <div class="kpi-head">
+                <span class="kpi-label">Active Incidents</span>
+                <i data-lucide="alert-triangle" style="color: #f59e0b; width: 18px;"></i>
+              </div>
+              <div class="kpi-val">1</div>
+              <div class="kpi-delta negative">
+                <i data-lucide="activity" style="width: 14px;"></i>
+                0 Critical / 1 Warning
+              </div>
+            </div>
+
+            <div class="kpi-dash-card">
+              <div class="kpi-head">
+                <span class="kpi-label">Cluster CPU Avg</span>
+                <i data-lucide="cpu" style="color: #00f2fe; width: 18px;"></i>
+              </div>
+              <div class="kpi-val">42.8%</div>
+              <div class="kpi-delta positive">
+                <i data-lucide="arrow-down-right" style="width: 14px;"></i>
+                -3.2% from peak
+              </div>
+            </div>
+
+            <div class="kpi-dash-card">
+              <div class="kpi-head">
+                <span class="kpi-label">Inference Latency</span>
+                <i data-lucide="clock" style="color: #7928ca; width: 18px;"></i>
+              </div>
+              <div class="kpi-val">0.012 ms</div>
+              <div class="kpi-delta positive">
+                <i data-lucide="check" style="width: 14px;"></i>
+                >80,000 predictions/sec
+              </div>
+            </div>
+          </div>
+
+          <!-- Charts Grid -->
+          <div class="charts-grid-main">
+            <div class="chart-card">
+              <div class="chart-card-header">
+                <div>
+                  <h3 style="font-size: 1.1rem; font-weight: 700;">Live Telemetry Stream</h3>
+                  <span style="font-size: 0.78rem; color: #64748b;">Real-time CPU and Memory tracking across monitored nodes</span>
+                </div>
+                <span style="font-size: 0.75rem; color: #00f2fe; font-weight: 700; background: rgba(0,242,254,0.1); padding: 4px 10px; border-radius: 12px;">● Streaming 3.5s</span>
+              </div>
+              <div class="chart-canvas-box">
+                <canvas id="chart-telemetry-main"></canvas>
+              </div>
+            </div>
+
+            <div class="chart-card">
+              <div class="chart-card-header">
+                <div>
+                  <h3 style="font-size: 1.1rem; font-weight: 700;">Anomaly Distribution</h3>
+                  <span style="font-size: 0.78rem; color: #64748b;">96.43% Normal baseline verification</span>
+                </div>
+              </div>
+              <div class="chart-canvas-box">
+                <canvas id="chart-anomalies-donut"></canvas>
+              </div>
+            </div>
+          </div>
+
+          <!-- Live Activity Feed -->
+          <div class="chart-card">
+            <div class="chart-card-header">
+              <h3 style="font-size: 1.1rem; font-weight: 700;">Autonomous Event Log</h3>
+              <span style="font-size: 0.75rem; color: #64748b;">Real-time model inferences & state checks</span>
+            </div>
+            <div id="live-activity-feed" style="display: flex; flex-direction: column; gap: 8px;">
+              <div style="font-size: 0.85rem; color: #94a3b8; padding: 8px 12px; background: rgba(255,255,255,0.02); border-radius: 6px;">
+                <span style="color: #64748b; font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; margin-right: 12px;">12:00:00</span>
+                Cluster initialized: server-01, server-02, server-03 active.
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- VIEW 2: ANALYTICS HUD -->
+        <section class="page-view" id="view-analytics">
+          <div class="page-header-row">
+            <div>
+              <h1 class="page-title">Analytics & Model Performance</h1>
+              <p class="page-subtitle">Empirical test validation against threshold baseline.</p>
+            </div>
+          </div>
+
+          <div class="chart-card" style="margin-bottom: 24px;">
+            <h3 style="font-size: 1.1rem; margin-bottom: 12px;">Model Benchmark Matrix (10,368 Test Samples)</h3>
+            <table class="custom-dash-table">
+              <thead>
+                <tr>
+                  <th>Metric</th>
+                  <th>Threshold Baseline</th>
+                  <th>Pulse Isolation Forest</th>
+                  <th>Gain / Advantage</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>F1 Score</strong></td>
+                  <td>0.3244</td>
+                  <td style="color: #00f2fe; font-weight: 700;">0.6854</td>
+                  <td style="color: #10b981; font-weight: 700;">+111% F1 Improvement</td>
+                </tr>
+                <tr>
+                  <td><strong>False Alarm Rate</strong></td>
+                  <td>4.82%</td>
+                  <td style="color: #00f2fe; font-weight: 700;">0.80%</td>
+                  <td style="color: #10b981; font-weight: 700;">6x Fewer False Positives</td>
+                </tr>
+                <tr>
+                  <td><strong>Average Delay</strong></td>
+                  <td>12.80s</td>
+                  <td style="color: #00f2fe; font-weight: 700;">4.61s</td>
+                  <td style="color: #10b981; font-weight: 700;">< 1 Sample Interval</td>
+                </tr>
+                <tr>
+                  <td><strong>Accuracy</strong></td>
+                  <td>92.10%</td>
+                  <td style="color: #00f2fe; font-weight: 700;">96.43%</td>
+                  <td style="color: #10b981; font-weight: 700;">High Overall Confidence</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- VIEW 3: USERS & OPERATORS TABLE -->
+        <section class="page-view" id="view-users">
+          <div class="page-header-row">
+            <div>
+              <h1 class="page-title">Operator & SRE Directory</h1>
+              <p class="page-subtitle">Search, filter, and audit team access across clusters.</p>
+            </div>
+            <button class="btn btn-primary" onclick="showToast('Invite modal opened', 'info')">
+              <i data-lucide="user-plus" style="width: 16px;"></i>
+              Invite Operator
+            </button>
+          </div>
+
+          <div class="table-card">
+            <div class="table-controls-bar">
+              <input type="text" id="table-user-search" class="table-search-input" placeholder="Search by name or email...">
+              <select id="table-role-filter" class="table-search-input" style="min-width: 180px;">
+                <option value="all">All Roles</option>
+                <option value="SRE Lead">SRE Lead</option>
+                <option value="DevOps Engineer">DevOps Engineer</option>
+                <option value="Cloud Architect">Cloud Architect</option>
+                <option value="Security Analyst">Security Analyst</option>
+              </select>
+            </div>
+
+            <table class="custom-dash-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Role</th>
+                  <th>Status</th>
+                  <th>Last Active</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="users-table-tbody"></tbody>
+            </table>
+
+            <div class="pagination-bar" id="table-pagination-controls"></div>
+          </div>
+        </section>
+
+        <!-- VIEW 4: INCIDENT KANBAN BOARD -->
+        <section class="page-view" id="view-projects">
+          <div class="page-header-row">
+            <div>
+              <h1 class="page-title">Incident Response Kanban</h1>
+              <p class="page-subtitle">Drag-and-drop anomalies through investigation and resolution stages.</p>
+            </div>
+            <button class="btn btn-primary" onclick="simulateIncident('Manual Audit Task', 'cluster-prod')">
+              <i data-lucide="plus" style="width: 16px;"></i>
+              New Incident
+            </button>
+          </div>
+
+          <div class="kanban-board-container">
+            <!-- Backlog -->
+            <div class="kanban-col">
+              <div class="kanban-col-header">
+                <span>BACKLOG</span>
+                <span class="status-pill offline" id="badge-backlog">2</span>
+              </div>
+              <div class="kanban-cards-track" id="kanban-track-backlog"></div>
+            </div>
+
+            <!-- Investigating -->
+            <div class="kanban-col">
+              <div class="kanban-col-header">
+                <span>INVESTIGATING</span>
+                <span class="status-pill warning" id="badge-investigating">1</span>
+              </div>
+              <div class="kanban-cards-track" id="kanban-track-investigating"></div>
+            </div>
+
+            <!-- Mitigating -->
+            <div class="kanban-col">
+              <div class="kanban-col-header">
+                <span>MITIGATING</span>
+                <span class="status-pill warning" id="badge-mitigating">1</span>
+              </div>
+              <div class="kanban-cards-track" id="kanban-track-mitigating"></div>
+            </div>
+
+            <!-- Resolved -->
+            <div class="kanban-col">
+              <div class="kanban-col-header">
+                <span>RESOLVED</span>
+                <span class="status-pill active" id="badge-resolved">1</span>
+              </div>
+              <div class="kanban-cards-track" id="kanban-track-resolved"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- VIEW 5: SETTINGS -->
+        <section class="page-view" id="view-settings">
+          <div class="page-header-row">
+            <div>
+              <h1 class="page-title">Platform Configuration</h1>
+              <p class="page-subtitle">Configure thresholds, notification channels, and security settings.</p>
+            </div>
+          </div>
+
+          <div class="chart-card" style="max-width: 720px;">
+            <div style="display: flex; flex-direction: column; gap: 20px;">
+              <div>
+                <label style="display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 6px;">Anomaly Threshold (Isolation Forest)</label>
+                <input type="text" class="table-search-input" value="-0.15" style="width: 100%;">
+                <span style="font-size: 0.72rem; color: #64748b;">Observations with scores below this value are classified as anomalies.</span>
+              </div>
+
+              <div>
+                <label style="display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 6px;">Consecutive Confirmation Count (N)</label>
+                <input type="number" class="table-search-input" value="2" style="width: 100%;">
+                <span style="font-size: 0.72rem; color: #64748b;">Requires N consecutive anomalous observations before firing alerts.</span>
+              </div>
+
+              <div>
+                <label style="display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 6px;">Alert Cooldown Period (Seconds)</label>
+                <input type="number" class="table-search-input" value="120" style="width: 100%;">
+                <span style="font-size: 0.72rem; color: #64748b;">Suppresses repeat alerts for the same host during this window.</span>
+              </div>
+
+              <button class="btn btn-primary" style="align-self: flex-start;" onclick="showToast('Configuration saved successfully', 'success')">
+                Save Changes
+              </button>
+            </div>
+          </div>
+        </section>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- Command Palette Modal (Ctrl + K) -->
+  <div class="modal-backdrop" id="command-palette-backdrop">
+    <div class="command-palette-modal">
+      <div class="palette-input-wrap">
+        <i data-lucide="search" style="color: #64748b; width: 18px;"></i>
+        <input type="text" id="palette-search" class="palette-search-input" placeholder="Type a command or jump to page...">
+        <span class="kbd-shortcut">ESC</span>
+      </div>
+      <ul class="palette-results-list">
+        <li class="palette-item" data-route="overview">
+          <i data-lucide="layout-dashboard"></i>
+          <span>Jump to: Operations Overview</span>
+        </li>
+        <li class="palette-item" data-route="analytics">
+          <i data-lucide="line-chart"></i>
+          <span>Jump to: Analytics HUD</span>
+        </li>
+        <li class="palette-item" data-route="users">
+          <i data-lucide="users"></i>
+          <span>Jump to: Operator Directory</span>
+        </li>
+        <li class="palette-item" data-route="projects">
+          <i data-lucide="kanban"></i>
+          <span>Jump to: Incident Kanban</span>
+        </li>
+        <li class="palette-item" data-action="inject_cpu">
+          <i data-lucide="zap" style="color: #ef4444;"></i>
+          <span>Action: Simulate CPU Spike on server-01</span>
+        </li>
+        <li class="palette-item" data-action="export_csv">
+          <i data-lucide="download" style="color: #00f2fe;"></i>
+          <span>Action: Export Telemetry Data (CSV)</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <script src="/js/dashboard.js"></script>
+</body>
+</html>

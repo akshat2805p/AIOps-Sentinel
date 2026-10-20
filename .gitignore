@@ -1,0 +1,69 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+*.egg
+dist/
+build/
+.venv/
+venv/
+env/
+*.whl
+
+# ML artifacts (raw datasets ignored, lightweight joblib models tracked)
+ml/models/*.onnx
+ml/models/*.pkl
+ml/data/raw/*.csv
+ml/data/processed/*.csv
+ml/data/processed/*.parquet
+
+# Databases
+*.db
+*.sqlite
+*.sqlite3
+backend/*.db
+database/*.db
+
+# Node / Dashboard
+dashboard/node_modules/
+dashboard/dist/
+dashboard/.vite/
+
+# C++ build
+backend/build/
+backend/cmake-build-*/
+*.o
+*.obj
+*.exe
+*.so
+*.dylib
+*.dll
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Environment
+.env
+*.local
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Docker
+docker-compose.override.yml
+
+# Logs
+*.log
+logs/
+
+# Coverage
+htmlcov/
+.coverage
+coverage.xml

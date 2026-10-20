@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AIOps Sentinel — Autonomous Cloud Telemetry & AI Anomaly Detection Platform</title>
+  <meta name="description" content="AIOps Sentinel delivers autonomous infrastructure telemetry, multivariate anomaly detection, and continuous incident risk prediction powered by locally trained Isolation Forest models.">
+  <meta property="og:title" content="AIOps Sentinel — Autonomous Telemetry & Incident Risk Platform">
+  <meta property="og:description" content="Eliminate alert fatigue with sub-millisecond multivariate server anomaly detection and automated incident triage.">
+  <meta property="og:type" content="website">
+
+  <!-- Inline SVG Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ffffff'><path d='M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5'/></svg>">
+
+  <!-- Google Fonts: Inter & Space Grotesk & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="/css/style.css">
+
+  <!-- Pinned CDN Libraries -->
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.344.0/dist/umd/lucide.min.js"></script>
+</head>
+<body>
+
+  <!-- Custom Cursor -->
+  <div class="custom-cursor-dot"></div>
+  <div class="custom-cursor-follower"></div>
+
+  <!-- Scroll Progress Bar -->
+  <div class="scroll-progress-bar" id="scroll-progress-bar"></div>
+
+  <!-- Page Preloader -->
+  <div class="page-preloader" id="page-preloader">
+    <div class="preloader-spinner"></div>
+    <div class="preloader-text">Initializing Pulse Autonomous Core</div>
+  </div>
+
+  <!-- 1. Sticky Glass-Blur Navbar -->
+  <header class="navbar" id="navbar">
+    <div class="container navbar-inner">
+      <a href="/" class="nav-brand">
+        <div class="brand-icon-box">
+          <i data-lucide="shield-alert"></i>
+        </div>
+        <span class="brand-name">AIOps <span class="gradient-text">Sentinel</span></span>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="#features">Features</a></li>
+        <li><a href="#how-it-works">How It Works</a></li>
+        <li><a href="#showcase">Platform</a></li>
+        <li><a href="#pricing">Pricing</a></li>
+        <li><a href="#faq">FAQ</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <a href="/app/index.html" class="btn btn-ghost">Sign In</a>
+        <a href="/app/index.html" class="btn btn-primary">
+          Launch App
+          <i data-lucide="arrow-right" style="width: 16px; height: 16px;"></i>
+        </a>
+        <button class="mobile-toggle" id="mobile-toggle" aria-label="Toggle navigation">
+          <i data-lucide="menu"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- 2. Hero Section -->
+    <section class="hero-section">
+      <div class="container hero-grid">
+        <div class="section-tag">
+          <i data-lucide="sparkles" style="width: 14px; height: 14px;"></i>
+          Next-Generation AIOps Telemetry
+        </div>
+
+        <h1 class="hero-headline">
+          Autonomous Telemetry.<br>
+          <span class="gradient-text">Zero False Alarms.</span>
+        </h1>
+
+        <p class="hero-subtitle">
+          Pulse transforms raw infrastructure metrics into 54 temporal features, detecting multivariate incidents with unsupervised Isolation Forests before your users notice.
+        </p>
+
+        <div class="hero-cta-group">
+          <a href="/app/index.html" class="btn btn-primary">
+            Explore Live Dashboard
+            <i data-lucide="chevron-right" style="width: 16px; height: 16px;"></i>
+          </a>
+          <a href="#how-it-works" class="btn btn-secondary">
+            <i data-lucide="play" style="width: 16px; height: 16px;"></i>
+            See Architecture
+          </a>
+        </div>
+
+        <!-- Animated Counters -->
+        <div class="hero-stats-row">
+          <div class="stat-item">
+            <span class="stat-number" data-target="96.43" data-suffix="%" data-float="true">0%</span>
+            <span class="stat-label">Model Accuracy</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-number" data-target="4.61" data-suffix="s" data-float="true">0s</span>
+            <span class="stat-label">Detection Delay</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-number" data-target="80000" data-suffix="+/s" data-float="false">0</span>
+            <span class="stat-label">Inference Throughput</span>
+          </div>
+        </div>
+
+        <!-- Floating 3D-Tilt Mockup -->
+        <div class="mockup-container">
+          <div class="mockup-card">
+            <div class="mockup-header-bar">
+              <span class="window-dot dot-red"></span>
+              <span class="window-dot dot-yellow"></span>
+              <span class="window-dot dot-green"></span>
+              <span class="mockup-url-bar">https://sentinel.pulse.ai/cluster/production</span>
+            </div>
+
+            <div class="mockup-preview-screen">
+              <div class="preview-chart-box">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 0.75rem; color: #94a3b8;">
+                  <span>CLUSTER CPU & MEMORY TELEMETRY STREAM</span>
+                  <span style="color: #00f2fe; font-weight: 700;">● LIVE 10s INTERVAL</span>
+                </div>
+                <div style="height: 190px; width: 100%; display: flex; align-items: flex-end; gap: 8px; padding-bottom: 8px;">
+                  <div style="height: 45%; flex-grow: 1; background: rgba(0, 242, 254, 0.2); border-top: 2px solid #00f2fe; border-radius: 4px;"></div>
+                  <div style="height: 52%; flex-grow: 1; background: rgba(0, 242, 254, 0.2); border-top: 2px solid #00f2fe; border-radius: 4px;"></div>
+                  <div style="height: 48%; flex-grow: 1; background: rgba(0, 242, 254, 0.2); border-top: 2px solid #00f2fe; border-radius: 4px;"></div>
+                  <div style="height: 60%; flex-grow: 1; background: rgba(0, 242, 254, 0.2); border-top: 2px solid #00f2fe; border-radius: 4px;"></div>
+                  <div style="height: 55%; flex-grow: 1; background: rgba(0, 242, 254, 0.2); border-top: 2px solid #00f2fe; border-radius: 4px;"></div>
+                  <div style="height: 94%; flex-grow: 1; background: rgba(239, 68, 68, 0.35); border-top: 2px solid #ef4444; border-radius: 4px; position: relative;">
+                    <span style="position: absolute; top: -20px; left: -10px; font-size: 0.6rem; color: #ef4444; font-weight: 700;">ANOMALY</span>
+                  </div>
+                  <div style="height: 70%; flex-grow: 1; background: rgba(0, 242, 254, 0.2); border-top: 2px solid #00f2fe; border-radius: 4px;"></div>
+                  <div style="height: 46%; flex-grow: 1; background: rgba(0, 242, 254, 0.2); border-top: 2px solid #00f2fe; border-radius: 4px;"></div>
+                </div>
+              </div>
+
+              <div class="preview-telemetry-feed">
+                <div style="font-size: 0.75rem; color: #64748b; font-weight: 700;">AUTONOMOUS TRIAGE LOG</div>
+                <div style="font-size: 0.8rem; color: #00f5a0; background: rgba(0,245,160,0.1); padding: 8px 12px; border-radius: 6px;">
+                  ✓ Baseline healthy (54 features)
+                </div>
+                <div style="font-size: 0.8rem; color: #ef4444; background: rgba(239,68,68,0.15); padding: 8px 12px; border-radius: 6px;">
+                  ⚠️ Anomaly isolated on server-01
+                </div>
+                <div style="font-size: 0.8rem; color: #f59e0b; background: rgba(245,158,11,0.1); padding: 8px 12px; border-radius: 6px;">
+                  ⏱️ Cooldown active: 120s suppression
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. Infinite Logo Marquee -->
+    <section class="marquee-section">
+      <div class="marquee-heading">Trusted by Mission-Critical Infrastructure Teams Worldwide</div>
+      <div class="marquee-track">
+        <div class="marquee-item"><i data-lucide="cloud"></i> CLOUDFORCE</div>
+        <div class="marquee-item"><i data-lucide="database"></i> NEXUS DATA</div>
+        <div class="marquee-item"><i data-lucide="cpu"></i> HYPERION LABS</div>
+        <div class="marquee-item"><i data-lucide="shield"></i> SENTINEL SEC</div>
+        <div class="marquee-item"><i data-lucide="server"></i> MATRIX HOST</div>
+        <div class="marquee-item"><i data-lucide="globe"></i> APEX NETWORKS</div>
+        <!-- Duplicated for seamless loop -->
+        <div class="marquee-item"><i data-lucide="cloud"></i> CLOUDFORCE</div>
+        <div class="marquee-item"><i data-lucide="database"></i> NEXUS DATA</div>
+        <div class="marquee-item"><i data-lucide="cpu"></i> HYPERION LABS</div>
+        <div class="marquee-item"><i data-lucide="shield"></i> SENTINEL SEC</div>
+        <div class="marquee-item"><i data-lucide="server"></i> MATRIX HOST</div>
+        <div class="marquee-item"><i data-lucide="globe"></i> APEX NETWORKS</div>
+      </div>
+    </section>
+
+    <!-- 4. Bento Grid Features -->
+    <section class="bento-section" id="features">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-tag">Key Capabilities</div>
+          <h2>Engineered for High-Throughput Reliability</h2>
+          <p>Traditional monitoring tools generate alert noise. Pulse uses learned multivariate parameters to isolate genuine systemic risk.</p>
+        </div>
+
+        <div class="bento-grid">
+          <!-- Card 1 (Span 2) -->
+          <div class="bento-card col-span-2">
+            <div class="bento-icon"><i data-lucide="cpu"></i></div>
+            <h3 class="bento-title">Unsupervised Isolation Forest Engine</h3>
+            <p class="bento-desc">
+              Trained from scratch without external weights or cloud inference APIs. The model computes isolated partitioning path lengths across 54 temporal dimensions in 0.012 ms per observation.
+            </p>
+          </div>
+
+          <!-- Card 2 -->
+          <div class="bento-card">
+            <div class="bento-icon"><i data-lucide="shield-alert"></i></div>
+            <h3 class="bento-title">Smart Alert Triage</h3>
+            <p class="bento-desc">
+              Consecutive counter confirmation (N=2) and configurable 120s cooldown windows completely eliminate repetitive alert storms.
+            </p>
+          </div>
+
+          <!-- Card 3 -->
+          <div class="bento-card">
+            <div class="bento-icon"><i data-lucide="layers"></i></div>
+            <h3 class="bento-title">54 Temporal Features</h3>
+            <p class="bento-desc">
+              Captures rolling means and standard deviations across 1, 5, and 10-minute windows with first-order difference velocity lags.
+            </p>
+          </div>
+
+          <!-- Card 4 (Span 2) -->
+          <div class="bento-card col-span-2">
+            <div class="bento-icon"><i data-lucide="database"></i></div>
+            <h3 class="bento-title">Dual Resilient Database Layer</h3>
+            <p class="bento-desc">
+              Connects to enterprise PostgreSQL with connection pooling. If PostgreSQL is offline, seamlessly and transparently falls back to zero-config SQLite without a single dropped packet.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. Scroll Storytelling (Pinned Section) -->
+    <section class="story-section" id="how-it-works">
+      <div class="container story-container">
+        <div class="story-left-content">
+          <div class="section-tag">Workflow Lifecycle</div>
+          <h2>How Pulse Protects Your Infrastructure</h2>
+          <p>Continuous three-phase automated pipeline from telemetry capture to prioritized incident resolution.</p>
+          <div style="margin-top: 24px; padding: 20px; background: rgba(0,242,254,0.06); border: 1px solid rgba(0,242,254,0.2); border-radius: 14px;">
+            <div style="font-size: 0.75rem; color: #00f2fe; font-weight: 700; margin-bottom: 6px;">CURRENT STAGE</div>
+            <div id="story-preview-screen" style="font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; font-weight: 700;">
+              Phase 1: Continuous High-Frequency Telemetry Ingestion (54 Features)
+            </div>
+          </div>
+        </div>
+
+        <div class="story-steps-track">
+          <!-- Step 1 -->
+          <div class="story-step-card active-step">
+            <span class="step-num-badge">STEP 01</span>
+            <h3>High-Frequency Telemetry Ingestion</h3>
+            <p>Monitors CPU, Memory, Disk I/O, Network Throughput, Latency, and Error Rates. Ingestion validators sanitize and normalize parameters chronologically.</p>
+          </div>
+
+          <!-- Step 2 -->
+          <div class="story-step-card">
+            <span class="step-num-badge">STEP 02</span>
+            <h3>Sub-Millisecond Isolation Scoring</h3>
+            <p>Every observation is scored in under 0.02ms. Outliers receive shorter tree paths, yielding negative anomaly scores with calibrated validation thresholds.</p>
+          </div>
+
+          <!-- Step 3 -->
+          <div class="story-step-card">
+            <span class="step-num-badge">STEP 03</span>
+            <h3>Alert Engine Deduplication & Triage</h3>
+            <p>Suppresses temporary transient spikes. Alerts fire only after sustained anomaly confirmation and automatically categorize severity as Critical, Warning, or Info.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. Horizontal-Scroll Showcase Gallery -->
+    <section class="gallery-section" id="showcase">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-tag">Interactive Tour</div>
+          <h2>Complete Control Over Every Node</h2>
+          <p>Explore the dedicated modules built into the Pulse platform.</p>
+        </div>
+      </div>
+
+      <div class="gallery-horizontal-track" id="gallery-track">
+        <div class="gallery-card">
+          <div class="gallery-visual"><i data-lucide="gauge" style="width: 48px; height: 48px;"></i></div>
+          <h3>Real-Time Telemetry HUD</h3>
+          <p>Multi-metric live canvas charts with anomaly trigger indicators and customizable metric overlays.</p>
+        </div>
+
+        <div class="gallery-card">
+          <div class="gallery-visual"><i data-lucide="zap" style="width: 48px; height: 48px;"></i></div>
+          <h3>Fault Injection Studio</h3>
+          <p>Test your runbooks with synthetic CPU spikes, memory leaks, disk thrashing, and cascading outages.</p>
+        </div>
+
+        <div class="gallery-card">
+          <div class="gallery-visual"><i data-lucide="kanban" style="width: 48px; height: 48px;"></i></div>
+          <h3>Incident Kanban Triage</h3>
+          <p>Drag and drop anomalies between Backlog, Investigating, Mitigating, and Resolved with operator audit logs.</p>
+        </div>
+
+        <div class="gallery-card">
+          <div class="gallery-visual"><i data-lucide="terminal" style="width: 48px; height: 48px;"></i></div>
+          <h3>Ctrl+K Command Center</h3>
+          <p>Search servers, trigger stress simulations, and jump across clusters using keyboard shortcuts.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. Pricing Toggle Section -->
+    <section class="pricing-section" id="pricing">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-tag">Transparent Plans</div>
+          <h2>Predictable Pricing for Any Scale</h2>
+          <p>Choose the right tier for single clusters or global multi-region deployments.</p>
+        </div>
+
+        <div class="pricing-toggle-wrap">
+          <span style="font-size: 0.85rem; font-weight: 600;">Monthly</span>
+          <button class="toggle-switch-btn" id="pricing-switch-btn" aria-label="Toggle annual pricing">
+            <span class="toggle-thumb"></span>
+          </button>
+          <span style="font-size: 0.85rem; font-weight: 600;">Annual</span>
+          <span class="save-badge">Save 20%</span>
+        </div>
+
+        <div class="pricing-cards-grid">
+          <!-- Starter -->
+          <div class="pricing-card">
+            <h3>Developer</h3>
+            <p>For independent engineers & staging environments.</p>
+            <div class="plan-price-row">
+              <span class="price-currency">$</span>
+              <span class="price-value" data-monthly="29" data-annual="24">29</span>
+              <span class="price-period">/mo</span>
+            </div>
+            <ul class="plan-features-list">
+              <li><i data-lucide="check" style="width: 16px; color: #00f5a0;"></i> Up to 5 Monitored Hosts</li>
+              <li><i data-lucide="check" style="width: 16px; color: #00f5a0;"></i> 10s Ingestion Sample Rate</li>
+              <li><i data-lucide="check" style="width: 16px; color: #00f5a0;"></i> Local Isolation Forest Model</li>
+              <li><i data-lucide="check" style="width: 16px; color: #00f5a0;"></i> Community Support</li>
+            </ul>
+            <a href="/app/index.html" class="btn btn-secondary">Get Started</a>
+          </div>
+
+          <!-- Pro (Featured) -->
+          <div class="pricing-card featured">
+            <div class="section-tag" style="position: absolute; top: 16px; right: 16px; margin: 0;">Popular</div>
+            <h3>Production</h3>
+            <p>For high-availability engineering teams.</p>
+            <div class="plan-price-row">
+              <span class="price-currency">$</span>
+              <span class="price-value" data-monthly="89" data-annual="72">89</span>
+              <span class="price-period">/mo</span>
+            </div>
+            <ul class="plan-features-list">
+              <li><i data-lucide="check" style="width: 16px; color: #00f5a0;"></i> Up to 50 Monitored Hosts</li>
+              <li><i data-lucide="check" style="width: 16px; color: #00f5a0;"></i> 1s High-Frequency Ingestion</li>
+              <li><i data-lucide="check" style="width: 16px; color: #00f5a0;"></i> 54 Rolling Feature Engine</li>
+              <li><i data-lucide="check" style="width: 16px; color: #00f5a0;"></i> Automated Fault Injection Studio</li>
+              <li><i data-lucide="check" style="width: 16px; color: #00f5a0;"></i> Priority 24/7 Slack Support</li>
+            </ul>
+            <a href="/app/index.html" class="btn btn-primary">Start Free Trial</a>
+          </div>
+
+          <!-- Enterprise -->
+          <div class="pricing-card">
+            <h3>Enterprise</h3>
+            <p>Dedicated air-gapped on-premise clusters.</p>
+            <div class="plan-price-row">
+              <span class="price-currency">$</span>
+              <span class="price-value" data-monthly="299" data-annual="249">299</span>
+              <span class="price-period">/mo</span>
+            </div>
+            <ul class="plan-features-list">
+              <li><i data-lucide="check" style="width: 16px; color: #00f5a0;"></i> Unlimited Node Clusters</li>
+              <li><i data-lucide="check" style="width: 16px; color: #00f5a0;"></i> Air-Gapped Local Deployment</li>
+              <li><i data-lucide="check" style="width: 16px; color: #00f5a0;"></i> C++20 High-Throughput Drogon Core</li>
+              <li><i data-lucide="check" style="width: 16px; color: #00f5a0;"></i> Dedicated Solutions Architect</li>
+            </ul>
+            <a href="/app/index.html" class="btn btn-secondary">Contact Sales</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8. Testimonials Carousel -->
+    <section class="testimonials-section">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-tag">Social Proof</div>
+          <h2>Loved by Site Reliability Engineers</h2>
+          <p>See how teams eliminated alert fatigue and shortened MTTR.</p>
+        </div>
+
+        <div class="testimonials-track-wrap">
+          <div class="testimonials-track" id="testimonials-track">
+            <div class="testimonial-card">
+              <p>"Pulse detected a slow memory leak in our payment workers 45 minutes before OOM-killer was triggered. The consecutive thresholding eliminated 90% of our PagerDuty noise."</p>
+              <div class="testimonial-user">
+                <div class="user-avatar">MK</div>
+                <div>
+                  <strong>Marcus Krause</strong>
+                  <div style="font-size: 0.75rem; color: #64748b;">Principal SRE, FinScale</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="testimonial-card">
+              <p>"The fact that the Isolation Forest runs locally in under 0.02ms without pinging an external LLM makes this compliant with our strict medical air-gap policies."</p>
+              <div class="testimonial-user">
+                <div class="user-avatar">DR</div>
+                <div>
+                  <strong>Dr. Elena Rostova</strong>
+                  <div style="font-size: 0.75rem; color: #64748b;">Head of Infrastructure, BioMed Cloud</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="testimonial-card">
+              <p>"We tested the Fault Injection Studio during our GameDay. The cascading failure detection pinpointed the latency degradation instantly. Absolute game changer."</p>
+              <div class="testimonial-user">
+                <div class="user-avatar">SJ</div>
+                <div>
+                  <strong>Sarah Jenkins</strong>
+                  <div style="font-size: 0.75rem; color: #64748b;">DevOps Lead, StreamWave</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 9. FAQ Accordion -->
+    <section class="faq-section" id="faq">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-tag">Frequently Asked Questions</div>
+          <h2>Got Questions? We Have Answers.</h2>
+        </div>
+
+        <div class="faq-list">
+          <div class="faq-item">
+            <button class="faq-trigger">
+              <span>Why choose Isolation Forest over traditional static thresholds?</span>
+              <i data-lucide="chevron-down" class="faq-icon-arrow"></i>
+            </button>
+            <div class="faq-body">
+              <p>Static thresholds (e.g. CPU > 85%) miss compound subtle incidents (like memory leaks with rising latency) and generate high false alarm rates during harmless temporary traffic surges. Isolation Forest isolates multidimensional outliers based on learned historical distributions.</p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-trigger">
+              <span>Does Pulse send my telemetry to external cloud AI APIs?</span>
+              <i data-lucide="chevron-down" class="faq-icon-arrow"></i>
+            </button>
+            <div class="faq-body">
+              <p>No. Pulse is 100% self-contained. The Isolation Forest model trains and performs inference locally using native C++ / Python algorithms. No data ever leaves your perimeter.</p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-trigger">
+              <span>How does the system handle database outages?</span>
+              <i data-lucide="chevron-down" class="faq-icon-arrow"></i>
+            </button>
+            <div class="faq-body">
+              <p>Pulse includes an intelligent database adapter that connects to PostgreSQL by default, and automatically falls back to an embedded SQLite database if PostgreSQL is unconfigured or temporarily down.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 10. Final Call to Action -->
+    <section class="final-cta-section">
+      <div class="container">
+        <div class="cta-box">
+          <h2>Ready to Supercharge Your Observability?</h2>
+          <p style="margin: 16px auto 32px auto; max-width: 600px;">
+            Join engineering leaders worldwide. Launch the autonomous AIOps Sentinel dashboard in seconds with zero setup.
+          </p>
+          <a href="/app/index.html" class="btn btn-primary" style="padding: 14px 36px; font-size: 1rem;">
+            Launch Dashboard Now
+            <i data-lucide="arrow-right" style="width: 18px; height: 18px;"></i>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <div class="nav-brand" style="margin-bottom: 16px;">
+            <div class="brand-icon-box" style="width: 32px; height: 32px;"><i data-lucide="activity" style="width: 18px;"></i></div>
+            <span class="brand-name">Pulse<span class="gradient-text">.ai</span></span>
+          </div>
+          <p style="font-size: 0.85rem; max-width: 280px;">Autonomous server telemetry, multivariate anomaly detection, and continuous incident risk ranking.</p>
+        </div>
+
+        <div class="footer-col">
+          <h5>Platform</h5>
+          <ul class="footer-links">
+            <li><a href="/app/index.html#overview">Live Dashboard</a></li>
+            <li><a href="/app/index.html#analytics">Analytics HUD</a></li>
+            <li><a href="/app/index.html#projects">Kanban Triage</a></li>
+            <li><a href="/app/index.html#users">Operator Directory</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h5>Resources</h5>
+          <ul class="footer-links">
+            <li><a href="#how-it-works">Architecture</a></li>
+            <li><a href="#features">Feature Grid</a></li>
+            <li><a href="#pricing">Pricing Plans</a></li>
+            <li><a href="/README.md">Documentation</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h5>Connect</h5>
+          <ul class="footer-links">
+            <li><a href="https://github.com" target="_blank" rel="noopener">GitHub Repository</a></li>
+            <li><a href="https://twitter.com" target="_blank" rel="noopener">Twitter / X</a></li>
+            <li><a href="https://discord.com" target="_blank" rel="noopener">Discord Community</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>© 2026 Pulse / AIOps Sentinel. All rights reserved. Open source under MIT License.</div>
+        <div>Built for final-year CSE project presentation & enterprise SRE excellence.</div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/js/landing.js"></script>
+</body>
+</html>

@@ -1,0 +1,38 @@
+{
+  "train_rows": 31104,
+  "val_rows": 10368,
+  "test_rows": 10368,
+  "train_time_range": [
+    "2026-09-01 00:00:00+00:00",
+    "2026-09-02 04:47:50+00:00"
+  ],
+  "val_time_range": [
+    "2026-09-02 04:48:00+00:00",
+    "2026-09-02 14:23:50+00:00"
+  ],
+  "test_time_range": [
+    "2026-09-02 14:24:00+00:00",
+    "2026-09-02 23:59:50+00:00"
+  ],
+  "feature_means": {
+    "cpu_percent": 31.798253873050115,
+    "memory_percent": 57.19569952769122,
+    "disk_io_bytes_sec": 820557.5525650595,
+    "network_bytes_sec": 622153.9331386016,
+    "request_latency_ms": 63.963383566135455,
+    "error_rate": 0.005689890805239821
+  },
+  "feature_stds": {
+    "cpu_percent": 16.457872604360684,
+    "memory_percent": 14.914600864336848,
+    "disk_io_bytes_sec": 985851.3730636773,
+    "network_bytes_sec": 529122.6575043947,
+    "request_latency_ms": 164.57218727699131,
+    "error_rate": 0.015337489678776167
+  },
+  "anomaly_counts": {
+    "train": 2432,
+    "val": 761,
+    "test": 696
+  }
+}

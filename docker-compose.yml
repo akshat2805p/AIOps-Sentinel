@@ -1,0 +1,71 @@
+version: "3.8"
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: sentinel-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-sentinel}
+      POSTGRES_USER: ${POSTGRES_USER:-sentinel_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-changeme_in_production}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./database/migrations:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-sentinel_user} -d ${POSTGRES_DB:-sentinel}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - sentinel-net
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: sentinel-backend
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_DB: ${POSTGRES_DB:-sentinel}
+      POSTGRES_USER: ${POSTGRES_USER:-sentinel_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-changeme_in_production}
+      BACKEND_PORT: 8080
+      CORS_ORIGINS: "*"
+    ports:
+      - "${BACKEND_PORT:-8080}:8080"
+    volumes:
+      - ./ml/models:/app/ml/models
+      - ./database/sentinel.db:/app/database/sentinel.db
+    networks:
+      - sentinel-net
+
+  collector:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: sentinel-collector
+    restart: unless-stopped
+    depends_on:
+      - backend
+    environment:
+      SENTINEL_BACKEND_URL: http://backend:8080
+      COLLECTOR_HOST_ID: sentinel-node-01
+      COLLECT_INTERVAL: 10
+    command: ["python", "collector/sentinel_collector/collect.py", "--host-id", "sentinel-node-01", "--backend-url", "http://backend:8080", "--interval", "10"]
+    networks:
+      - sentinel-net
+
+volumes:
+  pgdata:
+
+networks:
+  sentinel-net:
+    driver: bridge
